@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Conduite technique – Pêcher, Nectarine, Poirier, Pommier, Vigne, Olivier, Cerisier, Agrumes</title>
+  <style>
+    :root {
+      --bg:#0f172a; /* slate-900 */
+      --panel:#111827; /* gray-900 */
+      --ink:#e5e7eb; /* gray-200 */
+      --muted:#9ca3af; /* gray-400 */
+      --accent:#10b981; /* emerald-500 */
+      --accent-2:#14b8a6; /* teal-500 */
+      --warn:#f59e0b; /* amber-500 */
+      --danger:#ef4444; /* red-500 */
+    }
+    html, body { background:var(--bg); color:var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"; margin:0; padding:0; }
+    header { position:sticky; top:0; z-index:50; backdrop-filter: blur(6px); background:rgba(15,23,42,.7); border-bottom:1px solid #1f2937; }
+    .wrap { max-width:1200px; margin:0 auto; padding:20px; }
+    .title { font-size:clamp(20px,2.6vw,34px); font-weight:800; letter-spacing:.3px; }
+    nav { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+    nav a { text-decoration:none; color:var(--ink); background:#111827; border:1px solid #1f2937; padding:8px 12px; border-radius:999px; font-size:14px; }
+    nav a:hover { border-color:var(--accent); color:#d1fae5; }
+    main { padding-bottom:60px; }
+    section { border:1px solid #1f2937; background:linear-gradient(180deg,#0b1224 0%, #0f172a 60%); border-radius:18px; margin:18px 0; overflow:hidden; }
+    section > .hd { display:flex; align-items:center; gap:10px; padding:18px 20px; background:#0b1224; border-bottom:1px solid #1f2937; }
+    section h2 { margin:0; font-size:22px; }
+    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:16px; padding:18px 20px; }
+    .col-4 { grid-column:span 4; }
+    .col-6 { grid-column:span 6; }
+    .col-8 { grid-column:span 8; }
+    .col-12 { grid-column:span 12; }
+    @media (max-width:900px){ .col-4,.col-6,.col-8{ grid-column:span 12; } }
+    .card { background:#0b1224; border:1px solid #1f2937; border-radius:14px; padding:14px; }
+    h3 { margin:12px 0 8px; font-size:18px; }
+    p { color:#e5e7eb; line-height:1.6; }
+    small, .muted { color:var(--muted); }
+    ul { margin:8px 0 14px 20px; }
+    li { margin:6px 0; }
+    table { width:100%; border-collapse:collapse; border:1px solid #1f2937; }
+    th, td { border:1px solid #1f2937; padding:8px 10px; text-align:left; vertical-align:top; }
+    th { background:#0b1224; }
+    details { border:1px dashed #1f2937; border-radius:12px; padding:10px 12px; margin:10px 0; }
+    summary { cursor:pointer; color:#a7f3d0; font-weight:600; }
+    .badge { display:inline-block; padding:2px 8px; border:1px solid #1f2937; border-radius:999px; font-size:12px; margin-right:6px; }
+    .ok { color:#10b981; }
+    .warn { color:#fbbf24; }
+    .danger { color:#f87171; }
+    .gallery { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
+    .gallery img { width:100%; height:120px; object-fit:cover; border-radius:10px; border:1px solid #1f2937; background:#0b1224; }
+    .sticky-tools { position:fixed; inset:auto 20px 20px auto; z-index:60; display:flex; flex-direction:column; gap:10px; }
+    .tool { background:var(--panel); border:1px solid #1f2937; border-radius:14px; padding:12px; width:min(360px, 92vw); }
+    .tool h4 { margin:0 0 8px; }
+    input, select, button, textarea { background:#0b1224; color:var(--ink); border:1px solid #334155; border-radius:10px; padding:10px; width:100%; box-sizing:border-box; }
+    button { cursor:pointer; background:linear-gradient(180deg, var(--accent), var(--accent-2)); border:none; color:#052e2b; font-weight:700; }
+    .two { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .note { font-size:13px; color:var(--muted); }
+    footer { color:var(--muted); text-align:center; padding:30px 10px; }
+    .taglist { display:flex; flex-wrap:wrap; gap:6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="title">Conduite technique (vergers & vignoble) – Guide opérationnel</div>
+      <nav>
+        <a href="#pecher">Pêcher</a>
+        <a href="#nectarinier">Nectarinier</a>
+        <a href="#poirier">Poirier</a>
+        <a href="#pommier">Pommier</a>
+        <a href="#vigne">Vigne</a>
+        <a href="#olivier">Olivier</a>
+        <a href="#cerisier">Cerisier</a>
+        <a href="#agrumes">Agrumes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="col-12" id="outil-irrigation">
+      <div class="hd"><h2>Outil rapide : calcul des besoins en eau (ETc)</h2></div>
+      <div class="grid">
+        <div class="col-6">
+          <div class="card">
+            <p><strong>Formule</strong> : ETc (mm/j) = ETo (mm/j) × Kc (stade).<br> Eau/jour = ETc × Surface irriguée (m²) ÷ 1000 → en m³/jour.</p>
+            <div class="two">
+              <div>
+                <label>ETo (mm/j)</label>
+                <input id="eto" type="number" step="0.01" placeholder="ex. 5.5" />
+              </div>
+              <div>
+                <label>Surface (m²)</label>
+                <input id="surface" type="number" step="1" placeholder="ex. 10000 pour 1 ha" />
+              </div>
+            </div>
+            <div class="two" style="margin-top:10px">
+              <div>
+                <label>Culture</label>
+                <select id="cultureSelect"></select>
+              </div>
+              <div>
+                <label>Stade / Kc</label>
+                <select id="stadeSelect"></select>
+              </div>
+            </div>
+            <button style="margin-top:10px" onclick="calcETc()">Calculer l'eau journalière</button>
+            <p id="resultEau" class="note"></p>
+            <p class="note">Astuce : divisez par l'efficience d'irrigation (ex. 0,9 en goutte-à-goutte) pour obtenir le volume à appliquer.</p>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card">
+            <h3>Repères Kc (indicatifs)</h3>
+            <p class="note">Valeurs moyennes pour climat méditerranéen; ajuster selon densité, paillage, couverture du sol.</p>
+            <table>
+              <thead><tr><th>Culture</th><th>Stade végétatif (Kc)</th><th>Mi-saison / plein couvert (Kc)</th><th>Fin de saison (Kc)</th></tr></thead>
+              <tbody id="kcTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === PÊCHER === -->
+    <section id="pecher">
+      <div class="hd"><h2>Pêcher (Prunus persica)</h2><span class="badge">Feuillu</span><span class="badge">Froid hivernal</span></div>
+      <div class="grid">
+        <div class="col-6">
+          <div class="card">
+            <h3>Fenêtre de plantation (Maroc, zones à hiver froid)</h3>
+            <ul>
+              <li><strong>Plants à racines nues</strong> : <em>mi-décembre → fin février</em> (repos végétatif, hors gel).</li>
+              <li><strong>Plants en conteneur</strong> : <em>octobre → mars</em>, éviter les pics de chaleur et le vent desséchant.</li>
+            </ul>
+            <h3>Profondeur & espacements</h3>
+            <ul>
+              <li><strong>Profondeur</strong> : collet au niveau du sol; <em>greffe ≥ 10–15 cm</em> au-dessus du sol.</li>
+              <li><strong>Espacement</strong> : 5 × 4 m (classique); <span class="muted">haute densité : 4 × 2–3 m sur porte-greffes nanisants</span>.</li>
+            </ul>
+            <h3>Étapes de plantation</h3>
+            <ol>
+              <li><strong>Préparer</strong> des trous 60×60×60 cm + terre fine mélangée à 10–15 kg de compost mûr (hors contact direct des racines).</li>
+              <li><strong>Habillage</strong> des racines (racines nues) et trempage dans pralin (argile + compost + eau).</li>
+              <li><strong>Positionner</strong> l'arbre, étaler les racines, combler en tassant par couches; arroser 20–30 L pour chasser l'air.</li>
+              <li><strong>Tuteur</strong> côté vent dominant; <strong>cuvette</strong> d'irrigation; <strong>paillage</strong> 5–8 cm.</li>
+              <li><strong>Recépage/formation</strong> à 60–80 cm pour gobelet (3–4 charpentières).</li>
+            </ol>
+            <h3>Phénologie & repères visuels</h3>
+            <ul>
+              <li><strong>Repos</strong> : bois brun, bourgeons fermes.</li>
+              <li><strong>Débourrement</strong> : pointe verte visible.</li>
+              <li><strong>Floraison</strong> : fleurs roses avant feuilles.</li>
+              <li><strong>Nouaison</strong> : chute des pétales, fruits de 5–10 mm.</li>
+              <li><strong>Grossissement</strong> : durcissement du noyau, puis remplissage.</li>
+              <li><strong>Maturité</strong> : virage de couleur, fermeté ↓, Brix ↑.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card">
+            <h3>Irrigation (goutte-à-goutte)</h3>
+            <p>Base : ETc = ETo × Kc. Répartir en 1–2 tours/jour en été. <em>Réduire</em> avant récolte pour améliorer saveur (sans stress).</p>
+            <table>
+              <thead><tr><th>Stade</th><th>Kc</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>Débourrement–floraison</td><td>0,60–0,70</td><td>Sol humide mais non saturé.</td></tr>
+                <tr><td>Nouaison–mi-saison</td><td>0,75–0,85</td><td>Pics de besoin pendant grossissement I & II.</td></tr>
+                <tr><td>Pré-récolte</td><td>0,70–0,80</td><td>Légère restriction pour qualité.</td></tr>
+                <tr><td>Post-récolte–chute des feuilles</td><td>0,50–0,60</td><td>Maintenir activité foliaire pour mise en réserve.</td></tr>
+              </tbody>
+            </table>
+            <h3>Fertilisation (repères/an, adulte)</h3>
+            <ul>
+              <li><strong>Azote (N)</strong> : 70–120 kg/ha en 3 fractions : <em>débourrement (40%)</em>, <em>nouaison (40%)</em>, <em>post-récolte (20%)</em>.</li>
+              <li><strong>Phosphore (P₂O₅)</strong> : 30–60 kg/ha (automne/hiver, localisé).</li>
+              <li><strong>Potasse (K₂O)</strong> : 100–180 kg/ha (de floraison à grossissement).</li>
+              <li><strong>Calcium & Magnésium</strong> : selon analyse foliaire; Ca améliore fermeté.</li>
+              <li><strong>Oligo</strong> : B, Zn (applications foliaires ciblées si carences).</li>
+            </ul>
+            <p class="note">Toujours ajuster selon analyses de sol/feuilles et rendement visé.</p>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="card">
+            <h3>Taille & entretien</h3>
+            <ul>
+              <li><strong>Taille de formation</strong> : gobelet ou axe; sélectionner 3–4 charpentières (année 1–2).</li>
+              <li><strong>Taille de fructification</strong> (déc.–févr.) : renouveler le bois d'un an; raccourcir rameaux trop vigoureux.</li>
+              <li><strong>Éclaircissage</strong> : 1 fruit / 10–15 cm de rameau (3–5 semaines après floraison).</li>
+              <li><strong>Entretien sol</strong> : désherbage sous le rang, enherbement maîtrisé interrangs, paillage organique.</li>
+            </ul>
+            <h3>Ennemis & lutte intégrée (IPM)</h3>
+            <table>
+              <thead><tr><th>Ennemi</th><th>Symptômes</th><th>Seuil/Prévention</th><th>Mesures de lutte</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Cloque (Taphrina deformans)</strong></td><td>Feuilles boursouflées, rouges</td><td>Favorisée par pluie au débourrement</td><td>Traitements cuivreux en repos + fongicide au gonflement des bourgeons; éliminer pousses atteintes.</td></tr>
+                <tr><td><strong>Monilioses</strong></td><td>Fleurs et fruits pourrissants</td><td>Après pluies en floraison</td><td>Aération par taille, fongicides ciblés, hygiène des momies.</td></tr>
+                <tr><td><strong>Pucerons</strong></td><td>Feuilles enroulées, miellat</td><td>Surveillance seuils</td><td>Auxiliaires (coccinelles), huiles paraffiniques, insecticides si dépassement.</td></tr>
+                <tr><td><strong>Carpocapse</strong></td><td>Galeries dans fruits</td><td>Piégeage sexuel</td><td>Confusion sexuelle, traitements ovicides/larvicides selon captures.</td></tr>
+                <tr><td><strong>Carences Zn/B</strong></td><td>Raccourcissement entre-nœuds, déformations</td><td>Analyses foliaires</td><td>Apports foliaires Zn, B ciblés.</td></tr>
+              </tbody>
+            </table>
+            <details>
+              <summary>Galerie (remplacez les URLs par vos photos)</summary>
+              <div class="gallery">
+                <img src="https://placehold.co/320x200?text=P%C3%AAcher+verger" alt="Verger de pêcher" />
+                <img src="https://placehold.co/320x200?text=Cloque+du+p%C3%AAcher" alt="Cloque du pêcher" />
+                <img src="https://placehold.co/320x200?text=Moniliose" alt="Moniliose sur fruits" />
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- === NECTARINIER === -->
+    <section id="nectarinier">
+      <div class="hd"><h2>Nectarinier (Prunus persica var. nucipersica)</h2><span class="badge">Feuillu</span></div>
+      <div class="grid">
+        <div class="col-6 card">
+          <h3>Plantation</h3>
+          <ul>
+            <li><strong>Période</strong> : déc.–févr. (repos) ou plants en pot oct.–mars.</li>
+            <li><strong>Profondeur</strong> : collet au niveau du sol; greffe hors sol.</li>
+            <li><strong>Espacements</strong> : 4,5 × 4 m à 5 × 4 m (haute densité possible : 4 × 2,5 m).</li>
+            <li><strong>Étapes</strong> : identiques au pêcher (habillage, pralinage, arrosage d'installation, paillage).</li>
+          </ul>
+          <h3>Phénologie (repères)</h3>
+          <ul>
+            <li>Floraison précoce, souvent <em>avant</em> feuillaison → sensibilité au gel.</li>
+            <li>Cycles de grossissement en 2–3 vagues (durcissement noyau au milieu).</li>
+          </ul>
+        </div>
+        <div class="col-6 card">
+          <h3>Irrigation & fertilisation</h3>
+          <ul>
+            <li><strong>Kc</strong> proches du pêcher (0,6 → 0,85 → 0,7 → 0,5).</li>
+            <li><strong>N</strong> 80–130 kg/ha, <strong>K₂O</strong> 120–200 kg/ha; fractionner (débourrement, nouaison, post-récolte).</li>
+            <li>Surveiller <strong>Ca</strong> et <strong>B</strong> pour limiter crevasses et déformations.</li>
+          </ul>
+          <h3>Ennemis majeurs & lutte</h3>
+          <ul>
+            <li>Cloque, moniliose → mêmes mesures que pêcher.</li>
+            <li>Mouches des fruits (piégeage, hygiène, traitements appâts si besoin).</li>
+            <li>Pucerons, thrips sur jeunes fruits (veille et seuils).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- === POIRIER === -->
+    <section id="poirier">
+      <div class="hd"><h2>Poirier (Pyrus communis)</h2><span class="badge">Feuillu</span></div>
+      <div class="grid">
+        <div class="col-6 card">
+          <h3>Plantation</h3>
+          <ul>
+            <li><strong>Période</strong> : déc.–févr. (hors gel). Greffe au-dessus du sol.</li>
+            <li><strong>Espacement</strong> : 5 × 4 m; systèmes intensifs 4 × 2–3 m (porte-greffes cognassier nanisant, palmette/axe).</li>
+            <li><strong>Étapes</strong> : trou enrichi, tuteur, paillage; éviter l’asphyxie sur sols lourds (drainage).</li>
+          </ul>
+          <h3>Phénologie</h3>
+          <ul>
+            <li>Floraison <em>après</em> pommier (légèrement plus tardive).</li>
+            <li>Susceptible au <strong>feu bactérien</strong> (Erwinia amylovora).</li>
+          </ul>
+        </div>
+        <div class="col-6 card">
+          <h3>Irrigation & fertilisation</h3>
+          <ul>
+            <li><strong>Kc</strong> : 0,55–0,65 (début) → 0,85–1,00 (plein couvert) → 0,65 (fin).</li>
+            <li><strong>N</strong> 60–120 kg/ha; <strong>P₂O₅</strong> 30–60 kg/ha; <strong>K₂O</strong> 80–160 kg/ha.</li>
+            <li>Apports <strong>Ca</strong> et <strong>B</strong> pour qualité de peau et nouaison.</li>
+          </ul>
+          <h3>Ennemis & lutte</h3>
+          <ul>
+            <li><strong>Feu bactérien</strong> : proscrire tailles en période à risque; éliminer chancres, désinfecter outils; variétés moins sensibles; signaler selon réglementation.</li>
+            <li><strong>Psylle du poirier</strong> : miellat/fumagine → piégeage chromatique, auxiliaires, huiles, IGR si seuils.</li>
+            <li>Carpocapse, tavelure → confusion sexuelle, fongicides anti-tavelure en prévention (pluies), hygiène.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- === POMMIER === -->
+    <section id="pommier">
+      <div class="hd"><h2>Pommier (Malus domestica)</h2><span class="badge">Feuillu</span></div>
+      <div class="grid">
+        <div class="col-6 card">
+          <h3>Plantation</h3>
+          <ul>
+            <li><strong>Période</strong> : déc.–févr. (repos). Densités de 4 × 2,5 m à 5 × 4 m selon système.</li>
+            <li><strong>Profondeur</strong> : collet au niveau; greffe hors sol.</li>
+            <li><strong>Étapes</strong> : identiques; bien tuteurer en axe.</li>
+          </ul>
+          <h3>Phénologie (repères de stades)</h3>
+          <ul>
+            <li>Pointes vertes → boutons roses → pleine floraison → nouaison → chute physiologique de juin → grossissement → maturation.</li>
+          </ul>
+        </div>
+        <div class="col-6 card">
+          <h3>Irrigation & fertilisation</h3>
+          <ul>
+            <li><strong>Kc</strong> : 0,55–0,65 → 0,95–1,05 → 0,65.</li>
+            <li><strong>N</strong> 60–120 kg/ha (fractionné); <strong>K₂O</strong> 100–180 kg/ha; <strong>Ca</strong> foliaire contre bitter pit.</li>
+          </ul>
+          <h3>Ennemis & lutte</h3>
+          <ul>
+            <li><strong>Tavelure</strong> : programmes préventifs (pluies), variétés tolérantes, aération du couvert.</li>
+            <li><strong>Carpocapse (Cydia pomonella)</strong> : confusion sexuelle, suivi des vols, traitements ciblés.</li>
+            <li><strong>Pucerons / oïdium</strong> : surveillance au débourrement; huiles/fongicides si nécessaire.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- === VIGNE === -->
+    <section id="vigne">
+      <div class="hd"><h2>Vigne (Vitis vinifera)</h2><span class="badge">Vigne</span></div>
+      <div class="grid">
+        <div class="col-6 card">
+          <h3>Plantation</h3>
+          <ul>
+            <li><strong>Période</strong> : janv.–mars (repos). Boutures/greffés-soudés.</li>
+            <li><strong>Espacement</strong> : 2,5–3,0 m × 1,2–1,8 m (selon tuteurage/forme).</li>
+            <li><strong>Profondeur</strong> : point de greffe 4–6 cm au-dessus du sol; éviter poches d’air, pailler.</li>
+          </ul>
+          <h3>Phénologie</h3>
+          <ul>
+            <li>Débourrement → floraison → nouaison → fermeture de grappe → véraison → maturité.</li>
+          </ul>
+        </div>
+        <div class="col-6 card">
+          <h3>Irrigation & fertilisation</h3>
+          <ul>
+            <li><strong>Kc</strong> : 0,30–0,45 (début) → 0,60–0,75 (mi-saison) → 0,45–0,55 (fin).</li>
+            <li><strong>N</strong> 30–80 kg/ha; <strong>K₂O</strong> 60–150 kg/ha; <strong>P₂O₅</strong> 20–60 kg/ha (selon objectif vin/table).</li>
+          </ul>
+          <h3>Ennemis & lutte</h3>
+          <ul>
+            <li><strong>Oïdium</strong>, <strong>Mildiou</strong> : calendriers préventifs (soufre/cuivre + anti-oïdium modernes si besoin), aération de la canopée.</li>
+            <li><strong>Botrytis</strong> : éclaircissage, effeuillage ciblé côté levant.</li>
+            <li><strong>Vers de la grappe</strong> : confusion sexuelle / Bt / suivis de vols.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- === OLIVIER === -->
+    <section id="olivier">
+      <div class="hd"><h2>Olivier (Olea europaea)</h2><span class="badge">Persistant</span><span class="badge">Xérophile</span></div>
+      <div class="grid">
+        <div class="col-6 card">
+          <h3>Plantation</h3>
+          <ul>
+            <li><strong>Période</strong> : oct.–mars (hors gel/chaleur intense).</li>
+            <li><strong>Espacement</strong> : traditionnel 7 × 7 m; intensif 6 × 4 m; super-intensif 4 × 1,5 m (haies, variétés adaptées).</li>
+            <li><strong>Profondeur</strong> : collet au niveau; éviter enterrer la greffe.</li>
+          </ul>
+          <h3>Phénologie</h3>
+          <ul>
+            <li>Induction florale (hiver) → bouton floral (mars–avril) → floraison (mai) → nouaison (juin) → grossissement/huile (été–automne) → véraison → récolte.</li>
+          </ul>
+        </div>
+        <div class="col-6 card">
+          <h3>Irrigation & fertilisation</h3>
+          <ul>
+            <li><strong>Kc</strong> : 0,40–0,50 (début) → 0,60–0,70 (mi) → 0,50–0,60 (fin).</li>
+            <li><strong>N</strong> 60–150 kg/ha selon charge; <strong>K₂O</strong> 80–180 kg/ha; <strong>B</strong> très important (floraison/nouaison).</li>
+            <li>Fractionner : avant floraison, après nouaison, post-récolte.</li>
+          </ul>
+          <h3>Ennemis & lutte</h3>
+          <ul>
+            <li><strong>Mouche de l'olive</strong> : piégeage, surveillance, traitements appâts; récolte précoce pour limiter dégâts.</li>
+            <li><strong>Paon de l'olivier</strong>, <strong>œil de paon</strong> : fongicides cuivreux en automne/fin hiver.</li>
+            <li><strong>Cochenilles</strong> : huiles, auxiliaires.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- === CERISIER === -->
+    <section id="cerisier">
+      <div class="hd"><h2>Cerisier (Prunus avium – bigarreau)</h2><span class="badge">Feuillu</span></div>
+      <div class="grid">
+        <div class="col-6 card">
+          <h3>Plantation</h3>
+          <ul>
+            <li><strong>Période</strong> : déc.–févr. (repos) dans zones fraîches.</li>
+            <li><strong>Espacement</strong> : 5 × 4–5 m; haute densité 4 × 2–3 m (porte-greffes nanisants).</li>
+            <li><strong>Sol</strong> : drainé, pH 6–7; sensible à asphyxie.</li>
+          </ul>
+          <h3>Phénologie</h3>
+          <ul>
+            <li>Floraison précoce → sensibilité au gel; fruits à noyau fermes, récolte printanière.</li>
+          </ul>
+        </div>
+        <div class="col-6 card">
+          <h3>Irrigation & fertilisation</h3>
+          <ul>
+            <li><strong>Kc</strong> proche pêcher (0,6–0,8–0,6).</li>
+            <li><strong>N</strong> 50–100 kg/ha; <strong>K₂O</strong> 80–150 kg/ha; <strong>Ca</strong> améliore tenue.</li>
+          </ul>
+          <h3>Ennemis & lutte</h3>
+          <ul>
+            <li><strong>Mouches des cerises</strong> : piégeage jaune, filets, traitements ciblés.</li>
+            <li><strong>Monilioses</strong> : aération, fongicides floraison.</li>
+            <li><strong>Oiseaux</strong> : filets, effarouchement.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- === AGRUMES === -->
+    <section id="agrumes">
+      <div class="hd"><h2>Agrumes (Citrus spp. – oranger, clémentinier, citronnier…)</h2><span class="badge">Persistant</span></div>
+      <div class="grid">
+        <div class="col-6 card">
+          <h3>Plantation</h3>
+          <ul>
+            <li><strong>Période</strong> : sept.–nov. ou févr.–avril (éviter grand froid et chaleur).</li>
+            <li><strong>Espacement</strong> : 6 × 4–5 m (intensif) à 7 × 7 m (traditionnel).</li>
+            <li><strong>Profondeur</strong> : collet au niveau; éviter enterrer le point de greffe.</li>
+          </ul>
+          <h3>Phénologie</h3>
+          <ul>
+            <li>Floral « Neroli » (printemps) → nouaison → chute physiologique → grossissement → maturation (automne–hiver).</li>
+          </ul>
+        </div>
+        <div class="col-6 card">
+          <h3>Irrigation & fertilisation</h3>
+          <ul>
+            <li><strong>Kc</strong> : 0,55–0,65 (début) → 0,80–0,95 (mi-saison) → 0,65–0,75 (fin).</li>
+            <li><strong>N</strong> 120–200 kg/ha/an (fractionné : reprise végétative, post-nouaison, été); <strong>K₂O</strong> 150–250 kg/ha; <strong>P₂O₅</strong> 40–80 kg/ha.</li>
+            <li><strong>Carences</strong> fréquentes : <strong>Fe</strong> (chlorose sur sols calcaires, chélates), Zn, Mn.</li>
+          </ul>
+          <h3>Ennemis & lutte</h3>
+          <ul>
+            <li><strong>Pucerons, aleurodes, cochenilles</strong> : auxiliaires, huiles, insecticides sélectifs si seuils.</li>
+            <li><strong>Mineuse des agrumes</strong> (jeunes pousses) : éviter poussées végétatives continues; traitements ciblés.</li>
+            <li><strong>Maladies</strong> : pourritures collet (drainage), gommoses (porte-greffes adaptés), phytophthora (cuivre, hygiène).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Bonnes pratiques transversales</h3>
+      <ul>
+        <li><strong>Analyses de sol</strong> avant plantation; <strong>analyses foliaires</strong> en production (calibrage fertilisation).</li>
+        <li><strong>Fertigation</strong> : fractionner les apports selon stades; surveiller EC/pH de la solution.</li>
+        <li><strong>Gestion du sol</strong> : paillage, enherbement maîtrisé, travail minimal pour préserver la structure.</li>
+        <li><strong>Protection intégrée</strong> : seuils d’intervention, biodiversité utile, variétés/porte-greffes adaptés.</li>
+        <li><strong>Calendrier</strong> : noter dates clés (floraison, traitements, irrigations, récoltes) pour ajuster l’année suivante.</li>
+      </ul>
+      <p class="note">Les doses et Kc indiqués sont des fourchettes usuelles en climat méditerranéen. Adaptez-les à la variété, au porte-greffe, au sol, au microclimat et au rendement visé.</p>
+    </section>
+
+    <footer>
+      <p>💡 Remplacez les images par vos propres photos (champ, essais, fiches techniques). Vous pouvez dupliquer un bloc « section » pour ajouter d’autres cultures.</p>
+    </footer>
+  </main>
+
+  <div class="sticky-tools">
+    <div class="tool">
+      <h4>Notes & rappels</h4>
+      <div class="taglist">
+        <span class="badge">ETc = ETo × Kc</span>
+        <span class="badge">Fractionner N</span>
+        <span class="badge">Analyses foliaires</span>
+        <span class="badge">Hygiène verger</span>
+        <span class="badge">Confusion sexuelle</span>
+      </div>
+      <p class="note">Pour un dimensionnement fin, utilisez des stations météo locales (ETo Penman-Monteith) et faites valider le plan de fumure.</p>
+    </div>
+  </div>
+
+  <script>
+    // Données Kc indicatives par culture & stades
+    const kcMap = {
+      "Pêcher": {
+        stades: {
+          "Débourrement–Floraison": 0.65,
+          "Nouaison–Mi-saison": 0.80,
+          "Pré-récolte": 0.75,
+          "Post-récolte": 0.55
+        }
+      },
+      "Nectarinier": {
+        stades: {
+          "Débourrement–Floraison": 0.65,
+          "Nouaison–Mi-saison": 0.80,
+          "Pré-récolte": 0.75,
+          "Post-récolte": 0.55
+        }
+      },
+      "Poirier": {
+        stades: {
+          "Début de saison": 0.60,
+          "Mi-saison (plein couvert)": 0.95,
+          "Fin de saison": 0.65
+        }
+      },
+      "Pommier": {
+        stades: {
+          "Début de saison": 0.60,
+          "Mi-saison (plein couvert)": 1.00,
+          "Fin de saison": 0.65
+        }
+      },
+      "Vigne": {
+        stades: {
+          "Début (débourrement–floraison)": 0.40,
+          "Mi-saison (fermeture grappe)": 0.70,
+          "Fin (véraison–récolte)": 0.50
+        }
+      },
+      "Olivier": {
+        stades: {
+          "Début (reprise végétative)": 0.45,
+          "Mi-saison (plein couvert)": 0.65,
+          "Fin de saison": 0.55
+        }
+      },
+      "Cerisier": {
+        stades: {
+          "Débourrement–Floraison": 0.60,
+          "Nouaison–Mi-saison": 0.80,
+          "Fin de saison": 0.60
+        }
+      },
+      "Agrumes": {
+        stades: {
+          "Début (reprise, printemps)": 0.60,
+          "Mi-saison (plein couvert)": 0.90,
+          "Fin (automne-hiver)": 0.70
+        }
+      }
+    };
+
+    const cultureSelect = document.getElementById('cultureSelect');
+    const stadeSelect = document.getElementById('stadeSelect');
+    const kcTableBody = document.getElementById('kcTableBody');
+
+    function refreshKcUI(){
+      // Remplir le sélecteur de cultures
+      cultureSelect.innerHTML = '';
+      Object.keys(kcMap).forEach(c=>{
+        const opt = document.createElement('option');
+        opt.value = c; opt.textContent = c; cultureSelect.appendChild(opt);
+      });
+      // Remplir le tableau
+      kcTableBody.innerHTML = '';
+      Object.entries(kcMap).forEach(([cult, data])=>{
+        const st = data.stades;
+        const keys = Object.keys(st);
+        const tr = document.createElement('tr');
+        const tdc = document.createElement('td'); tdc.textContent = cult; tr.appendChild(tdc);
+        const td1 = document.createElement('td'); td1.textContent = st[keys[0]]; tr.appendChild(td1);
+        const td2 = document.createElement('td'); td2.textContent = st[keys[1]]; tr.appendChild(td2);
+        const td3 = document.createElement('td'); td3.textContent = st[keys[2]] ?? '-'; tr.appendChild(td3);
+        kcTableBody.appendChild(tr);
+      });
+      onCultureChange();
+    }
+
+    function onCultureChange(){
+      const c = cultureSelect.value;
+      const st = kcMap[c].stades;
+      stadeSelect.innerHTML = '';
+      Object.keys(st).forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s; opt.textContent = `${s} (Kc ${st[s]})`; stadeSelect.appendChild(opt);
+      })
+    }
+
+    cultureSelect.addEventListener('change', onCultureChange);
+
+    function calcETc(){
+      const eto = parseFloat(document.getElementById('eto').value || '0');
+      const surf = parseFloat(document.getElementById('surface').value || '0');
+      const c = cultureSelect.value; const s = stadeSelect.value; const kc = kcMap[c].stades[s];
+      if(!eto || !surf || !kc){
+        document.getElementById('resultEau').textContent = 'Veuillez saisir ETo, Surface et choisir culture/stade.';
+        return;
+      }
+      const etc = eto * kc; // mm/j
+      const m3j = (etc * surf) / 1000; // m3/j
+      document.getElementById('resultEau').innerHTML = `ETc ≈ <strong>${etc.toFixed(2)} mm/j</strong> → Eau ≈ <strong>${m3j.toFixed(2)} m³/j</strong> pour ${surf.toLocaleString()} m².`;
+    }
+
+    refreshKcUI();
+  </script>
+</body>
+</html>
